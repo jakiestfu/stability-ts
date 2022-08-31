@@ -1,0 +1,64 @@
+{
+  "name": "stability-ts",
+  "version": "1.1.0",
+  "description": "A TypeScript client for the Stability AI SDK",
+  "main": "./build/index.js",
+  "scripts": {
+    "start": "node ./build/index.js",
+    "prebuild": "yarn clean",
+    "build": "webpack",
+    "clean": "rimraf ./build",
+    "format": "prettier --write .",
+    "lint": "eslint . --fix --ext .ts,.tsx --max-warnings 0"
+  },
+  "bin": {
+    "stability": "build/bin.js"
+  },
+  "keywords": [],
+  "author": "Jacob Kelley <jakie8@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/google-protobuf": "^3.15.6",
+    "@types/mime": "^3.0.1",
+    "@types/mkdirp": "^1.0.2",
+    "@types/node": "^18.6.5",
+    "@types/uuid4": "^2.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "stability-sdk": "Stability-AI/stability-sdk",
+    "buffer": "^6.0.3",
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "events": "^3.3.0",
+    "path-browserify": "^1.0.1",
+    "prettier": "^2.7.1",
+    "process": "^0.11.10",
+    "rimraf": "^3.0.2",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.8.2",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-node-externals": "^3.0.0",
+    "webpack-shebang-plugin": "^1.1.8"
+  },
+  "dependencies": {
+    "@improbable-eng/grpc-web": "^0.15.0",
+    "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
+    "commander": "^9.4.0",
+    "dotenv": "^16.0.2",
+    "google-protobuf": "^3.21.0",
+    "mime": "^3.0.0",
+    "mkdirp": "^1.0.4",
+    "read-pkg-up": "^7.0.1",
+    "typed-emitter": "^2.1.0",
+    "uuid4": "^2.0.3"
+  },
+  "files": [
+    "package.json",
+    "build/**/*"
+  ]
+}

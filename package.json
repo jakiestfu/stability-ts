@@ -1,0 +1,43 @@
+{
+  "name": "stability-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".build/index.js",
+  "scripts": {
+    "start": "node .build/index.js",
+    "prebuild": "yarn clean",
+    "build": "ttsc -p ./tsconfig.json",
+    "clean": "rimraf .build",
+    "format": "prettier --write .",
+    "lint": "eslint . --fix --ext .ts,.tsx --max-warnings 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.6.5",
+    "@types/uuid4": "^2.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "ttypescript": "^1.5.13",
+    "typescript": "^4.8.2",
+    "typescript-transform-paths": "^3.3.1"
+  },
+  "dependencies": {
+    "@improbable-eng/grpc-web": "^0.15.0",
+    "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
+    "@types/google-protobuf": "^3.15.6",
+    "dotenv": "^16.0.2",
+    "google-protobuf": "^3.21.0",
+    "stability-sdk": "Stability-AI/stability-sdk",
+    "uuid4": "^2.0.3"
+  }
+}

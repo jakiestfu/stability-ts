@@ -1,7 +1,8 @@
 # Stability TS
 
-# Developing
-```
+## Developing
+
+```bash
 nvm use
 yarn
 yarn build
@@ -12,3 +13,5 @@ export DREAMSTUDIO_API_KEY=...
 
 stability "A stunning house"
 ```
+
+Get your API key from [DreamStudio](https://beta.dreamstudio.ai/membership).

@@ -1,2 +1,5 @@
 node_modules
 .build
+.out
+.env
+.DS_Store

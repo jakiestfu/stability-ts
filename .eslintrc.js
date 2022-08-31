@@ -15,7 +15,6 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     'linebreak-style': 'off',
-    'react/no-array-index-key': 'off',
     'consistent-return': 'off',
     'prettier/prettier': [
       'error',
@@ -26,6 +25,9 @@ module.exports = {
 
     'import/prefer-default-export': 'off',
     'no-console': ['error', { allow: ['log', 'error', 'warn', 'info'] }],
+    'react/jsx-filename-extension': 'off',
+    'import/extensions': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
   parserOptions: {
     ecmaFeatures: {

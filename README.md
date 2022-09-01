@@ -28,9 +28,8 @@ stability \
 ```
 
 ### Output
-|   |   |   |   |   |
+|<img src="https://i.imgur.com/m6k9u4t.png" width="100%">|<img src="https://i.imgur.com/tV23Lu2.png" width="100%">|<img src="https://i.imgur.com/YTlhfij.png" width="100%">|<img src="https://i.imgur.com/HMmbbZN.png" width="100%">|<img src="https://i.imgur.com/26oPc6k.png" width="100%">|
 |---|---|---|---|---|
-| <img src="https://i.imgur.com/m6k9u4t.png" width="100%"> | <img src="https://i.imgur.com/tV23Lu2.png" width="100%"> | <img src="https://i.imgur.com/YTlhfij.png" width="100%"> | <img src="https://i.imgur.com/HMmbbZN.png" width="100%"> | <img src="https://i.imgur.com/26oPc6k.png" width="100%"> |
 
 ***
 

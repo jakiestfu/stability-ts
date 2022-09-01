@@ -103,5 +103,9 @@ cli
     api.on('image', ({ filePath }) => {
       console.log('Image', filePath)
     })
+
+    api.on('end', ({ isOk, status, message }) => {
+      if (!isOk) console.error(`[stability] ${status}: ${message}`)
+    })
   })
   .parse()

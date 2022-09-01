@@ -15,6 +15,25 @@ npm update -g stability-ts
 yarn global add stability-ts
 ```
 
+## Example
+```sh
+stability \
+  -s 150 \ # Steps
+  -c 15 \ # Cfg Scale
+  -a k_euler_ancestral \ # Diffusion Method
+  -S 3465383516 \ # Seed
+  -o ./examples \ # Output Directory
+  -n 5 \ # 5 images
+  "a anime still of an highly detailed night cyberpunk city life, bladerunner style!! detailed shops, neon lights, ray tracing, advertising everywhere, people and robots walking around. art by satoshi kon and studio ghibli, in the style of ghost in the shell, muted colours, hyperrealism, cinematic lighting, lush detail, award winning, wlop, octane render, trending on artstation" 
+```
+
+### Output
+|   |   |   |   |   |
+|---|---|---|---|---|
+| <img src="https://i.imgur.com/m6k9u4t.png" width="100%"> | <img src="https://i.imgur.com/tV23Lu2.png" width="100%"> | <img src="https://i.imgur.com/YTlhfij.png" width="100%"> | <img src="https://i.imgur.com/HMmbbZN.png" width="100%"> | <img src="https://i.imgur.com/26oPc6k.png" width="100%"> |
+
+***
+
 ## API
 ```ts
 import { generate } from 'stability-ts'

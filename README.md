@@ -8,6 +8,9 @@ A TypeScript client for the Stability AI SDK.
 # NPM
 npm i -g stability-ts
 
+# To Update
+npm update -g stability-ts
+
 # Yarn
 yarn global add stability-ts
 ```

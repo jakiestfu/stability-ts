@@ -1,6 +1,6 @@
 {
   "name": "stability-ts",
-  "version": "1.2.0-rc1",
+  "version": "1.2.0",
   "description": "A TypeScript client for the Stability AI SDK",
   "main": "./build/index.js",
   "scripts": {

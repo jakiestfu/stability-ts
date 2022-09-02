@@ -6,7 +6,6 @@ import {
   ImageParameters,
   SamplerParameters,
   TransformType,
-  DiffusionSampler,
   StepParameter,
   ClassifierParameters,
   Answer,
@@ -18,23 +17,10 @@ import mime from 'mime'
 import fs from 'fs'
 import path from 'path'
 import mkdirp from 'mkdirp'
-
 import { EventEmitter } from 'events'
 import TypedEmitter from 'typed-emitter'
 
-export const range = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1)) + min
-
-export const diffusionMap = {
-  ddim: DiffusionSampler.SAMPLER_DDIM,
-  plms: DiffusionSampler.SAMPLER_DDPM,
-  k_euler: DiffusionSampler.SAMPLER_K_EULER,
-  k_euler_ancestral: DiffusionSampler.SAMPLER_K_EULER_ANCESTRAL,
-  k_heun: DiffusionSampler.SAMPLER_K_HEUN,
-  k_dpm_2: DiffusionSampler.SAMPLER_K_DPM_2,
-  k_dpm_2_ancestral: DiffusionSampler.SAMPLER_K_DPM_2_ANCESTRAL,
-  k_lms: DiffusionSampler.SAMPLER_K_LMS,
-}
+import { diffusionMap, range } from './utils'
 
 type DraftStabilityOptions = Partial<{
   outDir: string
@@ -71,7 +57,7 @@ type StabilityApi = TypedEmitter<{
   }) => void
 }>
 
-export const withDefaults: (
+const withDefaults: (
   draftOptions: DraftStabilityOptions & RequiredStabilityOptions
 ) => StabilityOptions = (draft) => {
   if (!draft.prompt) throw new Error('Prompt is required')

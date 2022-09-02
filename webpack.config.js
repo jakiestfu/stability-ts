@@ -3,7 +3,7 @@ const nodeExternals = require('webpack-node-externals')
 const ShebangPlugin = require('webpack-shebang-plugin')
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: {
     index: './src/index.ts',
     bin: './src/bin.ts',
@@ -21,8 +21,13 @@ module.exports = {
     rules: [
       {
         test: /\.ts?$/,
-        use: 'ts-loader',
+        use: 'babel-loader',
         exclude: /node_modules/,
+      },
+      {
+        test: /\.js$/,
+        use: ['source-map-loader'],
+        enforce: 'pre',
       },
     ],
   },
@@ -32,6 +37,9 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'build'),
+    library: {
+      type: 'commonjs',
+    },
   },
   plugins: [new ShebangPlugin()],
   node: {

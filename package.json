@@ -1,12 +1,13 @@
 {
   "name": "stability-ts",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A TypeScript client for the Stability AI SDK",
   "main": "./build/index.js",
   "scripts": {
     "start": "node ./build/index.js",
     "prebuild": "yarn clean",
     "build": "webpack",
+    "postbuild": "tsc -b .",
     "clean": "rimraf ./build",
     "format": "prettier --write .",
     "lint": "eslint . --fix --ext .ts,.tsx --max-warnings 0"
@@ -18,6 +19,9 @@
   "author": "Jacob Kelley <jakie8@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.18.13",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-typescript": "^7.18.6",
     "@types/google-protobuf": "^3.15.6",
     "@types/mime": "^3.0.1",
     "@types/mkdirp": "^1.0.2",
@@ -25,7 +29,7 @@
     "@types/uuid4": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
-    "stability-sdk": "Stability-AI/stability-sdk",
+    "babel-loader": "^8.2.5",
     "buffer": "^6.0.3",
     "eslint": "^8.10.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -38,6 +42,8 @@
     "prettier": "^2.7.1",
     "process": "^0.11.10",
     "rimraf": "^3.0.2",
+    "source-map-loader": "^4.0.0",
+    "stability-sdk": "Stability-AI/stability-sdk",
     "ts-loader": "^9.3.1",
     "typescript": "^4.8.2",
     "webpack": "^5.74.0",

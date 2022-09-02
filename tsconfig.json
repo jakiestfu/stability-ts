@@ -5,7 +5,7 @@
     "declaration": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
-    "lib": ["es2020"],
+    "lib": ["ES5"],
     "module": "commonjs",
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -20,7 +20,10 @@
     "strictNullChecks": true,
     "target": "es2021",
     "moduleResolution": "node",
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+
+    "emitDeclarationOnly": true,
+    "isolatedModules": true
   },
   "exclude": ["node_modules"],
   "include": ["src/**/*.ts"]

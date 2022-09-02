@@ -3,7 +3,8 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 import { Command, Option, InvalidArgumentError } from 'commander'
 import { sync as readPackageUpSync } from 'read-pkg-up'
-import { generate, diffusionMap, range } from './index'
+import { generate } from './index'
+import { diffusionMap, range } from './utils'
 
 const res = readPackageUpSync({
   cwd: __dirname,

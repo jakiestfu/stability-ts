@@ -39,7 +39,7 @@ import { generate } from 'stability-ts'
 
 const api = generate({
   prompt: 'A Stunning House',
-  token: process.env.DREAMSTUDIO_API_KEY,
+  apiKey: process.env.DREAMSTUDIO_API_KEY,
 })
 
 api.on('image', ({ buffer, filePath }) => {

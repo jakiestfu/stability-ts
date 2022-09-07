@@ -46,8 +46,8 @@ api.on('image', ({ buffer, filePath }) => {
   console.log('Image', buffer, filePath)
 })
 
-api.on('end', () => {
-  console.log('Generating Complete')
+api.on('end', (data) => {
+  console.log('Generating Complete', data)
 })
 ```
 

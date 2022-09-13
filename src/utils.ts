@@ -1,4 +1,4 @@
-import { DiffusionSampler } from 'stability-sdk/src/js/generation_pb'
+import { DiffusionSampler } from 'stability-sdk/gooseai/generation/generation_pb'
 
 export const range = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min

@@ -12,8 +12,8 @@ module.exports = {
   externals: [
     nodeExternals({
       allowlist: [
-        'stability-sdk/src/js/generation_pb_service',
-        'stability-sdk/src/js/generation_pb',
+        'stability-sdk/gooseai/generation/generation_pb_service',
+        'stability-sdk/gooseai/generation/generation_pb',
       ],
     }),
   ],

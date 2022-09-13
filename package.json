@@ -1,6 +1,6 @@
 {
   "name": "stability-ts",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "A TypeScript client for the Stability AI SDK",
   "main": "./build/index.js",
   "scripts": {
@@ -43,7 +43,7 @@
     "process": "^0.11.10",
     "rimraf": "^3.0.2",
     "source-map-loader": "^4.0.0",
-    "stability-sdk": "Stability-AI/stability-sdk",
+    "stability-sdk": "Stability-AI/api-interfaces",
     "ts-loader": "^9.3.1",
     "typescript": "^4.8.2",
     "webpack": "^5.74.0",

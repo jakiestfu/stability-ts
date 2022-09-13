@@ -1,5 +1,5 @@
 import { grpc } from '@improbable-eng/grpc-web'
-import { GenerationService } from 'stability-sdk/src/js/generation_pb_service'
+import { GenerationService } from 'stability-sdk/gooseai/generation/generation_pb_service'
 import {
   Request,
   Prompt,
@@ -10,7 +10,7 @@ import {
   ClassifierParameters,
   Answer,
   ArtifactType,
-} from 'stability-sdk/src/js/generation_pb'
+} from 'stability-sdk/gooseai/generation/generation_pb'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import uuid4 from 'uuid4'
 import mime from 'mime'

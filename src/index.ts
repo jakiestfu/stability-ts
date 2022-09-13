@@ -46,15 +46,18 @@ type RequiredStabilityOptions = {
 type StabilityOptions = RequiredStabilityOptions &
   Required<DraftStabilityOptions>
 
+type ImageData = { buffer: Buffer; filePath: string }
+type ResponseData = {
+  isOk: boolean
+  status: keyof grpc.Code
+  code: grpc.Code
+  message: string
+  trailers: grpc.Metadata
+}
+
 type StabilityApi = TypedEmitter<{
-  image: (data: { buffer: Buffer; filePath: string }) => void
-  end: (data: {
-    isOk: boolean
-    status: keyof grpc.Code
-    code: grpc.Code
-    message: string
-    trailers: grpc.Metadata
-  }) => void
+  image: (data: ImageData) => void
+  end: (data: ResponseData) => void
 }>
 
 const withDefaults: (
@@ -106,7 +109,7 @@ export const generate: (
 
   const api = new EventEmitter() as StabilityApi
 
-  mkdirp.sync(outDir)
+  if (!noStore) mkdirp.sync(outDir)
 
   /** Build Request **/
   const request = new Request()
@@ -198,3 +201,21 @@ export const generate: (
 
   return api
 }
+
+export const generateAsync: (
+  opts: DraftStabilityOptions & RequiredStabilityOptions
+) => unknown = (opts) =>
+  new Promise((resolve, reject) => {
+    const api = generate(opts)
+    let images: Array<ImageData> = []
+    api.on('image', (payload) => {
+      images = [...images, payload]
+    })
+    api.on('end', (data) => {
+      if (!data.isOk) return reject(new Error(data.message))
+      resolve({
+        res: data,
+        images,
+      })
+    })
+  })

@@ -51,6 +51,21 @@ api.on('end', (data) => {
 })
 ```
 
+Async/Promise API
+```ts
+import { generateAsync } from 'stability-ts'
+
+try {
+  const { res, images } = await generateAsync({
+    prompt: 'A Stunning House',
+    apiKey: process.env.DREAMSTUDIO_API_KEY,
+  })
+  console.log(images)
+} catch (e) {
+  // ...
+}
+```
+
 ## CLI
 ```sh
 Usage: stability [options] [prompt]

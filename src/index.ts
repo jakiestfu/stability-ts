@@ -7,7 +7,6 @@ import {
   SamplerParameters,
   TransformType,
   StepParameter,
-  ClassifierParameters,
   Answer,
   ArtifactType,
 } from 'stability-sdk/gooseai/generation/generation_pb'
@@ -142,8 +141,6 @@ export const generate: (
 
   request.setImage(image)
 
-  const classifier = new ClassifierParameters()
-  request.setClassifier(classifier)
   /** End Build Request **/
 
   if (debug) {

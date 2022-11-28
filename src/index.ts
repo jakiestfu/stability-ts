@@ -1,15 +1,17 @@
 import { grpc } from '@improbable-eng/grpc-web'
 import { GenerationService } from 'stability-sdk/gooseai/generation/generation_pb_service'
 import {
+  Artifact,
   Request,
   Prompt,
   ImageParameters,
   SamplerParameters,
   TransformType,
   StepParameter,
-  ClassifierParameters,
   Answer,
   ArtifactType,
+  PromptParameters,
+  ScheduleParameters,
 } from 'stability-sdk/gooseai/generation/generation_pb'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import uuid4 from 'uuid4'
@@ -27,7 +29,7 @@ type DraftStabilityOptions = Partial<{
   debug: boolean
   requestId: string
   samples: number
-  engine: 'stable-diffusion-v1'
+  engine: string
   host: string
   seed: number
   width: number
@@ -36,6 +38,12 @@ type DraftStabilityOptions = Partial<{
   steps: number
   cfgScale: number
   noStore: boolean
+  imagePrompt: {
+    mime: string
+    content: Buffer
+    mask?: { mime: string; content: Buffer }
+  } | null
+  stepSchedule: { start?: number; end?: number }
 }>
 
 type RequiredStabilityOptions = {
@@ -46,7 +54,14 @@ type RequiredStabilityOptions = {
 type StabilityOptions = RequiredStabilityOptions &
   Required<DraftStabilityOptions>
 
-type ImageData = { buffer: Buffer; filePath: string }
+type ImageData = {
+  buffer: Buffer
+  filePath: string
+  seed: number
+  mimeType: string
+  classifications: { realizedAction: number }
+}
+
 type ResponseData = {
   isOk: boolean
   status: keyof grpc.Code
@@ -81,6 +96,8 @@ const withDefaults: (
     outDir: draft.outDir ?? path.join(process.cwd(), '.out', requestId),
     debug: Boolean(draft.debug),
     noStore: Boolean(draft.noStore),
+    imagePrompt: draft.imagePrompt ?? null,
+    stepSchedule: draft.stepSchedule ?? {},
   }
 }
 
@@ -98,8 +115,10 @@ export const generate: (
     steps,
     cfgScale,
     samples,
+    stepSchedule,
     outDir,
     prompt: promptText,
+    imagePrompt: imagePromptData,
     apiKey,
     noStore,
     debug,
@@ -120,6 +139,32 @@ export const generate: (
   prompt.setText(promptText)
   request.addPrompt(prompt)
 
+  if (imagePromptData !== null) {
+    const artifact = new Artifact()
+    artifact.setType(ArtifactType.ARTIFACT_IMAGE)
+    artifact.setMime(imagePromptData.mime)
+    artifact.setBinary(imagePromptData.content)
+
+    const parameters = new PromptParameters()
+    parameters.setInit(true)
+
+    const imagePrompt = new Prompt()
+    imagePrompt.setArtifact(artifact)
+    imagePrompt.setParameters(parameters)
+    request.addPrompt(imagePrompt)
+
+    if (typeof imagePromptData.mask !== 'undefined') {
+      const maskArtifact = new Artifact()
+      maskArtifact.setType(ArtifactType.ARTIFACT_MASK)
+      maskArtifact.setMime(imagePromptData.mask.mime)
+      maskArtifact.setBinary(imagePromptData.mask.content)
+
+      const maskPrompt = new Prompt()
+      maskPrompt.setArtifact(maskArtifact)
+      request.addPrompt(maskPrompt)
+    }
+  }
+
   const image = new ImageParameters()
   image.setWidth(width)
   image.setHeight(height)
@@ -131,8 +176,12 @@ export const generate: (
   transform.setDiffusion(diffusionMap[diffusion])
   image.setTransform(transform)
 
+  const schedule = new ScheduleParameters()
+  if (typeof stepSchedule.start !== 'undefined')
+    schedule.setStart(stepSchedule.start)
   const step = new StepParameter()
   step.setScaledStep(0)
+  step.setSchedule(schedule)
 
   const sampler = new SamplerParameters()
   sampler.setCfgScale(cfgScale)
@@ -141,9 +190,6 @@ export const generate: (
   image.addParameters(step)
 
   request.setImage(image)
-
-  const classifier = new ClassifierParameters()
-  request.setClassifier(classifier)
   /** End Build Request **/
 
   if (debug) {
@@ -171,29 +217,57 @@ export const generate: (
       const answer = message.toObject()
 
       if (answer.artifactsList) {
-        answer.artifactsList.forEach(
-          ({ id, type, mime: mimeType, binary, seed: innerSeed }) => {
-            if (type === ArtifactType.ARTIFACT_IMAGE) {
-              // @ts-ignore
-              const buffer = Buffer.from(binary, 'base64')
-              const filePath = path.resolve(
-                path.join(
-                  outDir,
-                  `${answer.answerId}-${id}-${innerSeed}.${mime.getExtension(
-                    mimeType
-                  )}`
-                )
+        let image: Artifact.AsObject | null = null
+        let classifications: Artifact.AsObject | null = null
+        answer.artifactsList.forEach((artifact) => {
+          if (artifact.type === ArtifactType.ARTIFACT_IMAGE) {
+            if (image !== null)
+              throw new Error(
+                'Unexpectedly got multiple images in single answer'
               )
-
-              if (!noStore) fs.writeFileSync(filePath, buffer)
-
-              api.emit('image', {
-                buffer,
-                filePath,
-              })
+            image = artifact
+          } else if (artifact.type === ArtifactType.ARTIFACT_CLASSIFICATIONS) {
+            if (classifications !== null) {
+              throw new Error(
+                'Unexpectedly got multiple classification artifacts in single answer'
+              )
             }
+
+            classifications = artifact
           }
-        )
+        })
+
+        if (image !== null) {
+          if (classifications === null)
+            throw new Error('Missing classifications in answer')
+
+          const { id, mime: mimeType, binary, seed: innerSeed } = image
+
+          // @ts-ignore
+          const buffer = Buffer.from(binary, 'base64')
+          const filePath = path.resolve(
+            path.join(
+              outDir,
+              `${answer.answerId}-${id}-${innerSeed}.${mime.getExtension(
+                mimeType
+              )}`
+            )
+          )
+
+          if (!noStore) fs.writeFileSync(filePath, buffer)
+
+          const claz: Artifact.AsObject = classifications
+
+          api.emit('image', {
+            buffer,
+            filePath,
+            seed: innerSeed,
+            mimeType,
+            classifications: {
+              realizedAction: claz.classifier!.realizedAction,
+            },
+          })
+        }
       }
     },
     debug,
